@@ -1,0 +1,6 @@
+{
+    "" : "index",
+    "about" : "about",
+    "user/all" : "user::all",
+    "user/view" : "user::view"
+}

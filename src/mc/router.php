@@ -1,0 +1,76 @@
+<?php
+
+namespace mc;
+
+use Exception;
+
+/**
+ * this router class is based on $_GET
+ * <URL> ::= http[s]://<domain>/?<route-name>[/params]
+ */
+class router
+{
+    private static $routes = [];
+    private static $param = "q";
+    private static $default = "/";
+
+    /**
+     * set routes
+     * @param array $routes
+     */
+    public static function init(array $routes)
+    {
+        foreach ($routes as $route_name => $route_method) {
+            self::register($route_name, $route_method);
+        }
+    }
+
+    public static function load(string $jsonfile = "routes.json")
+    {
+        $routes = json_decode(file_get_contents($jsonfile));
+        self::init((array)$routes);
+    }
+
+    /**
+     * register a new route.
+     * If $route_method is null, the $route_name will be 
+     */
+    public static function register(string $route_name, callable $route_method)
+    {
+        if (is_callable($route_method) === false) {
+            throw new Exception("`{$route_method}` is not callable");
+        }
+        self::$routes[$route_name] = $route_method;
+    }
+
+    public static function set_param(string $param)
+    {
+        self::$param = $param;
+    }
+
+    public static function run()
+    {
+        $path = filter_input(INPUT_GET, self::$param, FILTER_DEFAULT, ["default" => self::$default]);
+        if (empty($path)) {
+            $path = self::$default;
+        }
+        $chunks = explode("/", $path);
+
+        // two-word label
+        if (count($chunks) > 1 && isset(self::$routes["{$chunks[0]}/{$chunks[1]}"])) {
+            $route_name = "{$chunks[0]}/{$chunks[1]}";
+            unset($chunks[0]);
+            unset($chunks[1]);
+            self::$routes[$route_name]($chunks);
+            return;
+        }
+
+        // one-word label
+        if (isset(self::$routes[$chunks[0]])) {
+            $route_name = $chunks[0];
+            unset($chunks[0]);
+            self::$routes[$route_name]($chunks);
+            return;
+        }
+    }
+}
