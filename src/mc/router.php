@@ -25,6 +25,9 @@ class router
         }
     }
 
+    /**
+     * load routes from JSON file
+     */
     public static function load(string $jsonfile = "routes.json")
     {
         $routes = json_decode(file_get_contents($jsonfile));
@@ -43,11 +46,17 @@ class router
         self::$routes[$route_name] = $route_method;
     }
 
+    /**
+     * rewrite default param name
+     */
     public static function set_param(string $param)
     {
         self::$param = $param;
     }
 
+    /**
+     * entry point for routing!
+     */
     public static function run()
     {
         $path = filter_input(INPUT_GET, self::$param, FILTER_DEFAULT, ["default" => self::$default]);
