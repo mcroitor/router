@@ -54,6 +54,22 @@ php -t ./tests/ -S localhost:8000
 
 Open one of the specified URL-s after this.
 
+## project usage
+
+You can use my simple [module manager](https://github.com/mcroitor/module_manager),
+just include in `modules.json`:
+
+```json
+[{
+    "user" : "mcroitor",
+    "repository" : "router",
+    "branch" : "master",
+    "source" : "./src"
+}]
+```
+
+and install it.
+
 ## interface
 
 ```php
