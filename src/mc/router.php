@@ -68,18 +68,19 @@ class router
         // two-word label
         if (count($chunks) > 1 && isset(self::$routes["{$chunks[0]}/{$chunks[1]}"])) {
             $route_name = "{$chunks[0]}/{$chunks[1]}";
-            unset($chunks[0]);
-            unset($chunks[1]);
-            self::$routes[$route_name]($chunks);
-            return;
+            array_shift($chunks);
+            array_shift($chunks);
+            
+            return self::$routes[$route_name]($chunks);
         }
-
+        
         // one-word label
         if (isset(self::$routes[$chunks[0]])) {
             $route_name = $chunks[0];
-            unset($chunks[0]);
-            self::$routes[$route_name]($chunks);
-            return;
+            array_shift($chunks);
+            
+            return self::$routes[$route_name]($chunks);
         }
+        return;
     }
 }
