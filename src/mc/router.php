@@ -20,6 +20,7 @@ class router
      */
     public static function init(array $routes)
     {
+        self::$routes[self::$default] = function () {};
         foreach ($routes as $route_name => $route_method) {
             self::register($route_name, $route_method);
         }
