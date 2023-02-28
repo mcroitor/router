@@ -84,4 +84,9 @@ class router
         }
         return self::$routes[self::$default]();
     }
+
+    public static function getRoutes()
+    {
+        return array_keys(self::$routes);
+    }
 }
