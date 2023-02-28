@@ -37,7 +37,7 @@ class router
 
     /**
      * register a new route.
-     * If $route_method is null, the $route_name will be 
+     * If $route_method is null, the $route_name will be
      */
     public static function register(string $route_name, callable $route_method)
     {
@@ -82,6 +82,11 @@ class router
             
             return self::$routes[$route_name]($chunks);
         }
-        return;
+        return self::$routes[self::$default]();
+    }
+
+    public static function getRoutes()
+    {
+        return array_keys(self::$routes);
     }
 }

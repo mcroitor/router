@@ -103,7 +103,7 @@ class router
     public static function set_param(string $param);
 
     /**
-     * entry point for routing!
+     * entry point for routing! Returns route value.
      */
     public static function run();
 }
