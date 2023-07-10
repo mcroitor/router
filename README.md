@@ -5,7 +5,7 @@ This router is GET method based.
 
 All methods of `router` class are static. Default route param is `q`.
 
-Prerequisites:
+## Prerequisites:
 
  * route name is composed from one (the `function` or `label` name) or two words (the `class method` name), separated by slash. All other words in route are function / method parameters. Examples:
    * `home` - route to callable labeled by `home`.
@@ -15,7 +15,7 @@ Prerequisites:
  * two-word labeled callable is prioritized
  * callable use an array of strings parameter
 
-Example of route description:
+## Example of route description:
 
 ```php
 
@@ -25,6 +25,7 @@ class post {
     public static function edit(array $params) { echo "edit post {$params[0]}"; }
 }
 
+// routes description
 $routes = [
     "post/all" => "post::all",
     "post/view" => "post::view",
@@ -46,6 +47,43 @@ Usage examples for provided routes:
  * `https://localhost:8000/?q=post/edit/5`
  * `https://localhost:8000/?q=about`
 
+## Attribute usage example
+
+```php
+#[route("about")]
+function about() {
+    echo "about function called";
+}
+
+class post {
+    #[route("post/all")]
+    public static function all(array $params) { echo "show all posts"; }
+
+    #[route("post/view")]
+    public static function view(array $params) { echo "show post {$params[0]}"; }
+
+    #[route("post/edit")]
+    public static function edit(array $params) { echo "edit post {$params[0]}"; }
+}
+
+// register routes
+\mc\router::init();
+
+// process route
+\mc\router::run();
+```
+
+Usage examples for provided routes:
+
+ * `https://localhost:8000/?q=post/all`
+ * `https://localhost:8000/?q=post/view/1/2/3`
+ * `https://localhost:8000/?q=post/edit/5`
+ * `https://localhost:8000/?q=about`
+
+You can combine attributes with route registration.
+
+## Testing
+
 For testing you can start embedded PHP server in the project:
 
 ```shell
@@ -53,6 +91,16 @@ php -t ./tests/ -S localhost:8000
 ```
 
 Open one of the specified URL-s after this.
+
+* `http:://localhost:8000/test.php?q=test`
+* `http:://localhost:8000/test.php?q=test/function`
+* `http:://localhost:8000/test.php?q=test/do`
+* `http:://localhost:8000/test01.php?q=about`
+* `http:://localhost:8000/test01.php?q=user/all`
+* `http:://localhost:8000/test01.php?q=user/view`
+* `http:://localhost:8000/test02.php?q=about`
+* `http:://localhost:8000/test02.php?q=user/all`
+* `http:://localhost:8000/test02.php?q=user/view`
 
 ## project usage
 
@@ -85,7 +133,7 @@ class router
      * set routes
      * @param array $routes
      */
-    public static function init(array $routes);
+    public static function init(array $routes = []);
 
     /**
      * load routse from JSON file

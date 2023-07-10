@@ -1,6 +1,6 @@
 <?php
 
-include_once "../src/mc/router.php";
+include_once __DIR__ . "/../src/mc/router.php";
 
 use \mc\router;
 
