@@ -131,7 +131,7 @@ class router {
 
             return self::$routes[$route_name]($chunks);
         }
-        return self::$routes[self::$default]();
+        return self::$routes[self::$default]([]);
     }
 
     public static function getRoutes() {
