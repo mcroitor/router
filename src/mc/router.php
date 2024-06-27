@@ -15,6 +15,7 @@ class router {
     private static $routes = [];
     private static $param = "q";
     private static $default = "/";
+    private static $selectedRoute = "/";
 
     /**
      * set routes
@@ -117,24 +118,37 @@ class router {
 
         // two-word label
         if (count($chunks) > 1 && isset(self::$routes["{$chunks[0]}/{$chunks[1]}"])) {
-            $route_name = "{$chunks[0]}/{$chunks[1]}";
+            self::$selectedRoute = "{$chunks[0]}/{$chunks[1]}";
             array_shift($chunks);
             array_shift($chunks);
 
-            return self::$routes[$route_name]($chunks);
+            return self::$routes[self::$selectedRoute]($chunks);
         }
 
         // one-word label
         if (isset(self::$routes[$chunks[0]])) {
-            $route_name = $chunks[0];
+            self::$selectedRoute = $chunks[0];
             array_shift($chunks);
 
-            return self::$routes[$route_name]($chunks);
+            return self::$routes[self::$selectedRoute]($chunks);
         }
-        return self::$routes[self::$default]([]);
+        self::$selectedRoute = self::$default;
+        return self::$routes[self::$selectedRoute]([]);
     }
 
+    /**
+     * get list of routes
+     * @return array
+     */
     public static function getRoutes() {
         return array_keys(self::$routes);
+    }
+
+    /**
+     * get current route
+     * @return string
+     */
+    public static function getSelectedRoute() {
+        return self::$selectedRoute;
     }
 }
