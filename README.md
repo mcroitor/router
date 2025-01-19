@@ -1,21 +1,21 @@
 # PHP router
 
 The `router` class do simple thing: routes by `label` to the callable. The callable need to be registered.
-This router is GET method based. 
+This router is GET method based.
 
 All methods of `router` class are static. Default route param is `q`.
 
-## Prerequisites:
+## Prerequisites
 
- * route name is composed from one (the `function` or `label` name) or two words (the `class method` name), separated by slash. All other words in route are function / method parameters. Examples:
-   * `home` - route to callable labeled by `home`.
-   * `about/company` - can be: callable labeled `about` with param _['company']_; callable labeled `about/company`;
-   * `about/strategy` - can be: callable labeled `about` with param _['strategy']_; callable labeled `about/strategy`;
-   * `user/view/2` - can be: callable labeled `user` with param _['view', 2]_; callable labeled `user/view` with param _[2]_;
- * two-word labeled callable is prioritized
- * callable use an array of strings parameter
+- route name is composed from one (the `function` or `label` name) or two words (the `class method` name), separated by slash. All other words in route are function / method parameters. Examples:
+  - `home` - route to callable labeled by `home`.
+  - `about/company` - can be: callable labeled `about` with param _['company']_; callable labeled `about/company`;
+  - `about/strategy` - can be: callable labeled `about` with param _['strategy']_; callable labeled `about/strategy`;
+  - `user/view/2` - can be: callable labeled `user` with param _['view', 2]_; callable labeled `user/view` with param _[2]_;
+- two-word labeled callable is prioritized
+- callable use an array of strings parameter
 
-## Example of route description:
+## Example of route description
 
 ```php
 
@@ -42,10 +42,10 @@ $routes = [
 
 Usage examples for provided routes:
 
- * `https://localhost:8000/?q=post/all`
- * `https://localhost:8000/?q=post/view/1/2/3`
- * `https://localhost:8000/?q=post/edit/5`
- * `https://localhost:8000/?q=about`
+- `https://localhost:8000/?q=post/all`
+- `https://localhost:8000/?q=post/view/1/2/3`
+- `https://localhost:8000/?q=post/edit/5`
+- `https://localhost:8000/?q=about`
 
 ## Attribute usage example
 
@@ -75,10 +75,10 @@ class post {
 
 Usage examples for provided routes:
 
- * `https://localhost:8000/?q=post/all`
- * `https://localhost:8000/?q=post/view/1/2/3`
- * `https://localhost:8000/?q=post/edit/5`
- * `https://localhost:8000/?q=about`
+- `https://localhost:8000/?q=post/all`
+- `https://localhost:8000/?q=post/view/1/2/3`
+- `https://localhost:8000/?q=post/edit/5`
+- `https://localhost:8000/?q=about`
 
 You can combine attributes with route registration.
 
@@ -92,15 +92,15 @@ php -t ./tests/ -S localhost:8000
 
 Open one of the specified URL-s after this.
 
-* `http:://localhost:8000/test.php?q=test`
-* `http:://localhost:8000/test.php?q=test/function`
-* `http:://localhost:8000/test.php?q=test/do`
-* `http:://localhost:8000/test01.php?q=about`
-* `http:://localhost:8000/test01.php?q=user/all`
-* `http:://localhost:8000/test01.php?q=user/view`
-* `http:://localhost:8000/test02.php?q=about`
-* `http:://localhost:8000/test02.php?q=user/all`
-* `http:://localhost:8000/test02.php?q=user/view`
+- `http:://localhost:8000/test.php?q=test`
+- `http:://localhost:8000/test.php?q=test/function`
+- `http:://localhost:8000/test.php?q=test/do`
+- `http:://localhost:8000/test01.php?q=about`
+- `http:://localhost:8000/test01.php?q=user/all`
+- `http:://localhost:8000/test01.php?q=user/view`
+- `http:://localhost:8000/test02.php?q=about`
+- `http:://localhost:8000/test02.php?q=user/all`
+- `http:://localhost:8000/test02.php?q=user/view`
 
 ## project usage
 
