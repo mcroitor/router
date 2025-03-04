@@ -8,7 +8,8 @@ use Exception;
  * this router class is based on $_GET
  * <URL> ::= http[s]://<domain>/?<route-name>[/params]
  */
-class router {
+class router
+{
 
     private const ATTRIBUTE_NAME = \mc\route::class;
 
@@ -21,7 +22,8 @@ class router {
      * set routes
      * @param array $routes
      */
-    public static function init(array $routes = []): void {
+    public static function init(array $routes = []): void
+    {
         self::$routes[self::$default] = function (): string {
             return "";
         };
@@ -35,7 +37,8 @@ class router {
     /**
      * scan classes. select all static methods and check attributes
      */
-    private static function scan_classes(): void {
+    private static function scan_classes(): void
+    {
         $classes = \get_declared_classes();
         foreach ($classes as $class) {
             $reflection = new \ReflectionClass($class);
@@ -49,7 +52,8 @@ class router {
     /**
      * scan functions. check attributes
      */
-    private static function scan_functions(): void {
+    private static function scan_functions(): void
+    {
         $functions = \get_defined_functions();
         foreach ($functions['user'] as $function) {
             $reflection = new \ReflectionFunction($function);
@@ -61,7 +65,8 @@ class router {
      * if method or function has `route` attribute, register it
      * @param \ReflectionFunction $reflection
      */
-    private static function register_method($reflection): void {
+    private static function register_method($reflection): void
+    {
         $attribute = self::get_method_attribute($reflection, self::ATTRIBUTE_NAME);
         if ($attribute != null) {
             $route = $attribute->getArguments()[0];
@@ -69,7 +74,8 @@ class router {
         }
     }
 
-    private static function get_method_attribute($method, $attributeName) {
+    private static function get_method_attribute($method, $attributeName)
+    {
         /** @var \ReflectionAttribute $attributes */
         $attributes = $method->getAttributes();
         foreach ($attributes as $attribute) {
@@ -83,7 +89,8 @@ class router {
     /**
      * load routes from JSON file
      */
-    public static function load(string $jsonfile = "routes.json"): void {
+    public static function load(string $jsonfile = "routes.json"): void
+    {
         $routes = json_decode(file_get_contents($jsonfile));
         self::init((array) $routes);
     }
@@ -92,7 +99,8 @@ class router {
      * register a new route.
      * If $route_method is null, the $route_name will be
      */
-    public static function register(string $route_name, callable $route_method): void {
+    public static function register(string $route_name, callable $route_method): void
+    {
         if (is_callable($route_method) === false) {
             throw new Exception("`{$route_method}` is not callable");
         }
@@ -102,14 +110,16 @@ class router {
     /**
      * rewrite default param name
      */
-    public static function set_param(string $param): void {
+    public static function set_param(string $param): void
+    {
         self::$param = $param;
     }
 
     /**
      * entry point for routing!
      */
-    public static function run(): string {
+    public static function run(): string
+    {
         $path = filter_input(INPUT_GET, self::$param, FILTER_DEFAULT, ["default" => self::$default]);
         if (empty($path)) {
             $path = self::$default;
@@ -142,7 +152,8 @@ class router {
      * @param string $needle
      * @return array
      */
-    public static function get_routes(string $needle = ""): array {
+    public static function get_routes(string $needle = ""): array
+    {
         $routes = [];
         foreach (self::$routes as $route => $method) {
             if (strpos($route, $needle) === 0) {
@@ -156,7 +167,26 @@ class router {
      * get current route
      * @return string
      */
-    public static function get_selected_route(): string {
+    public static function get_selected_route(): string
+    {
         return self::$selectedRoute;
+    }
+
+    /**
+     * redirect to another route
+     * @param string $route
+     * @param array $params
+     * @param int  $code
+     * @return void
+     */
+    public static function redirect(string $route, array $params = []): void
+    {
+        $q = self::$param;
+        $url = "?{$q}={$route}";
+        foreach ($params as $param) {
+            $url .= "/{$param}";
+        }
+        header("Location: {$url}");
+        exit();
     }
 }
