@@ -16,7 +16,7 @@ $routes = [
 ];
 
 // register routes
-\mc\router::init($routes);
+\Mc\Router::init($routes);
 
 // process route
-\mc\router::run();
+\Mc\Router::run();

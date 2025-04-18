@@ -2,7 +2,7 @@
 
 include_once __DIR__ . "/../src/mc/router.php";
 
-use \mc\router;
+use \Mc\Router;
 
 class oops
 {
@@ -25,6 +25,6 @@ $routes = [
     "test/do" => "oops::do"
 ];
 
-router::init($routes);
+Router::init($routes);
 
-router::run();
+Router::run();

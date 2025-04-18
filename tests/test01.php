@@ -20,6 +20,6 @@ class user {
     }
 }
 
-\mc\router::load(__DIR__ . "/routes.json");
+\Mc\Router::load(__DIR__ . "/routes.json");
 
-\mc\router::run();
+\Mc\Router::run();

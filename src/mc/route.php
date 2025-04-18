@@ -1,8 +1,8 @@
 <?php
 
-namespace mc;
+namespace Mc;
 
 #[Attribute]
-class route {
+class Route {
     
 }

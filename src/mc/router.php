@@ -1,6 +1,6 @@
 <?php
 
-namespace mc;
+namespace Mc;
 
 use Exception;
 
@@ -8,10 +8,10 @@ use Exception;
  * this router class is based on $_GET
  * <URL> ::= http[s]://<domain>/?<route-name>[/params]
  */
-class router
+class Router
 {
 
-    private const ATTRIBUTE_NAME = \mc\route::class;
+    private const ATTRIBUTE_NAME = \mc\Route::class;
 
     private static $routes = [];
     private static $param = "q";
@@ -110,7 +110,7 @@ class router
     /**
      * rewrite default param name
      */
-    public static function set_param(string $param): void
+    public static function setParam(string $param): void
     {
         self::$param = $param;
     }
@@ -152,7 +152,7 @@ class router
      * @param string $needle
      * @return array
      */
-    public static function get_routes(string $needle = ""): array
+    public static function getRoutes(string $needle = ""): array
     {
         $routes = [];
         foreach (self::$routes as $route => $method) {
@@ -167,7 +167,7 @@ class router
      * get current route
      * @return string
      */
-    public static function get_selected_route(): string
+    public static function getSelectedRoute(): string
     {
         return self::$selectedRoute;
     }
