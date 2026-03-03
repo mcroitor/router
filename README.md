@@ -41,8 +41,9 @@ and install it.
 namespace Mc;
 
 /**
- * this router class is based on $_GET
- * <URL> ::= http[s]://<domain>/?<route-name>[/params]
+ * Router supports REST-style routing (HTTP method + path)
+ * and legacy $_GET-based routing using the default "q" parameter.
+ * Legacy URL format: http[s]://<domain>/?q=<route-name>[/params]
  */
 class Router
 {
