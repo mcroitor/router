@@ -40,7 +40,7 @@ Add REST API routing with HTTP method awareness while keeping backward compatibi
 - [x] Add request body parsing helpers:
   - [x] `application/json`
   - [x] `application/x-www-form-urlencoded`
-- [x] Add response helper: `json(array|object $data, int $status = 200): void`.
+- [x] Add response helper: `json(array|object $data, int $status = 200): string`.
 - [x] Define default error payload format for API errors.
 - [x] Add / update tests for template matching and body parsing.
 
