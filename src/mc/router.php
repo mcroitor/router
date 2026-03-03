@@ -9,7 +9,7 @@ use Exception;
  * - REST mode: dispatch by HTTP method + REQUEST_URI path
  * - Legacy mode: dispatch by GET param (`q` by default)
  *
- * Legacy URL format: http[s]://<domain>/?<route-name>[/params]
+ * Legacy URL format: http[s]://<domain>/?q=<route-name>[/params] (default; configurable via setParam())
  */
 class Router
 {
