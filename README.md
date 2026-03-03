@@ -195,7 +195,7 @@ class Router
     public static function init(array $routes = []);
 
     /**
-        * load routes from JSON file
+     * load routes from JSON file
      */
     public static function load(string $jsonfile = "routes.json");
 
