@@ -19,6 +19,86 @@ All methods of `router` class are static. Default route param is `q`.
 - two-word labeled callable is prioritized
 - callable use an array of strings parameter
 
+## Project usage
+
+You can use my simple [module manager](https://github.com/mcroitor/module_manager),
+just include in `modules.json`:
+
+```json
+[{
+    "user" : "mcroitor",
+    "repository" : "router",
+    "branch" : "master",
+    "source" : "./src"
+}]
+```
+
+and install it.
+
+## Interface
+
+```php
+namespace Mc;
+
+/**
+ * Router supports REST-style routing (HTTP method + path)
+ * and legacy $_GET-based routing using the default "q" parameter.
+ * Legacy URL format: http[s]://<domain>/?q=<route-name>[/params]
+ */
+class Router
+{
+    /**
+     * set routes
+     * @param array $routes
+     */
+    public static function init(array $routes = []);
+
+    /**
+     * load routes from JSON file
+     */
+    public static function load(string $jsonfile = "routes.json");
+
+    /**
+     * register a new route.
+     */
+    public static function register(string $route_name, callable $route_method);
+
+    /**
+     * register route for one or many HTTP methods
+     */
+    public static function match(array $methods, string $path, callable $route_method);
+
+    public static function get(string $path, callable $route_method);
+    public static function post(string $path, callable $route_method);
+    public static function put(string $path, callable $route_method);
+    public static function patch(string $path, callable $route_method);
+    public static function delete(string $path, callable $route_method);
+    public static function options(string $path, callable $route_method);
+
+    /**
+     * request helpers
+     */
+    public static function getPathParams(): array;
+    public static function getQueryParams(): array;
+    public static function getBody(): array;
+
+    /**
+     * build JSON response payload
+     */
+    public static function json($data, int $status = 200): string;
+
+    /**
+     * rewrite default param name
+     */
+    public static function setParam(string $param): void;
+
+    /**
+     * entry point for routing! Returns route value.
+     */
+    public static function run(): string;
+}
+```
+
 ## Example of route description
 
 ```php
@@ -155,87 +235,8 @@ function user_view() {
 {"error":{"code":"not_found","message":"Not Found","status":404}}
 ```
 
-## project usage
-
-You can use my simple [module manager](https://github.com/mcroitor/module_manager),
-just include in `modules.json`:
-
-```json
-[{
-    "user" : "mcroitor",
-    "repository" : "router",
-    "branch" : "master",
-    "source" : "./src"
-}]
-```
-
-and install it.
-
 ## License
 
 This project is released under the Unlicense. See `UNLICENSE`.
 
 SPDX-License-Identifier: Unlicense
-
-## interface
-
-```php
-namespace Mc;
-
-/**
- * this router class is based on $_GET
- * <URL> ::= http[s]://<domain>/?<route-name>[/params]
- */
-class Router
-{
-    /**
-     * set routes
-     * @param array $routes
-     */
-    public static function init(array $routes = []);
-
-    /**
-     * load routes from JSON file
-     */
-    public static function load(string $jsonfile = "routes.json");
-
-    /**
-     * register a new route.
-     */
-    public static function register(string $route_name, callable $route_method);
-
-    /**
-     * register route for one or many HTTP methods
-     */
-    public static function match(array $methods, string $path, callable $route_method);
-
-    public static function get(string $path, callable $route_method);
-    public static function post(string $path, callable $route_method);
-    public static function put(string $path, callable $route_method);
-    public static function patch(string $path, callable $route_method);
-    public static function delete(string $path, callable $route_method);
-    public static function options(string $path, callable $route_method);
-
-    /**
-     * request helpers
-     */
-    public static function getPathParams(): array;
-    public static function getQueryParams(): array;
-    public static function getBody(): array;
-
-    /**
-     * build JSON response payload
-     */
-    public static function json($data, int $status = 200): string;
-
-    /**
-     * rewrite default param name
-     */
-    public static function setParam(string $param): void;
-
-    /**
-     * entry point for routing! Returns route value.
-     */
-    public static function run(): string;
-}
-```
