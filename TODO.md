@@ -8,7 +8,7 @@ Add REST API routing with HTTP method awareness while keeping backward compatibi
 
 - [x] Extend route storage from `path => handler` to `method + path => handler`.
 - [x] Keep `register(string $route, callable $handler)` as backward-compatible alias for `GET`.
-- [ ] Add REST helpers in `Router`:
+- [x] Add REST helpers in `Router`:
   - [x] `get(string $path, callable $handler)`
   - [x] `post(string $path, callable $handler)`
   - [x] `put(string $path, callable $handler)`
