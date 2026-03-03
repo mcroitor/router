@@ -28,7 +28,7 @@ class Router
     private static $isBodyParsed = false;
 
     /**
-        * Set routes.
+     * Set routes.
      * @param array $routes
      */
     public static function init(array $routes = []): void
@@ -52,7 +52,7 @@ class Router
     }
 
     /**
-        * Scan classes. Select all static methods and check attributes.
+     * Scan classes. Select all static methods and check attributes.
      */
     private static function scan_classes(): void
     {
@@ -67,7 +67,7 @@ class Router
     }
 
     /**
-        * Scan functions. Check attributes.
+     * Scan functions. Check attributes.
      */
     private static function scan_functions(): void
     {
@@ -79,8 +79,8 @@ class Router
     }
 
     /**
-      * If method or function has `route` attribute, register it.
-      * @param \ReflectionFunctionAbstract $reflection
+     * If method or function has `route` attribute, register it.
+     * @param \ReflectionFunctionAbstract $reflection
      */
     private static function register_method($reflection): void
     {
@@ -116,7 +116,7 @@ class Router
     }
 
     /**
-        * Load routes from JSON file.
+     * Load routes from JSON file.
      */
     public static function load(string $jsonfile = "routes.json"): void
     {
@@ -125,12 +125,12 @@ class Router
     }
 
     /**
-      * Register a new route.
-      * Backward-compatible alias for GET route registration.
-      *
-      * @param string $route_name
-      * @param callable $route_method
-      * @return void
+     * Register a new route.
+     * Backward-compatible alias for GET route registration.
+     *
+     * @param string $route_name
+     * @param callable $route_method
+     * @return void
      */
     public static function register(string $route_name, callable $route_method): void
     {
@@ -142,7 +142,7 @@ class Router
     }
 
     /**
-        * Register GET route.
+     * Register GET route.
      * @param string $path
      * @param callable $route_method
      * @return void
@@ -153,7 +153,7 @@ class Router
     }
 
     /**
-        * Register POST route.
+     * Register POST route.
      * @param string $path
      * @param callable $route_method
      * @return void
@@ -164,7 +164,7 @@ class Router
     }
 
     /**
-        * Register PUT route.
+     * Register PUT route.
      * @param string $path
      * @param callable $route_method
      * @return void
@@ -175,7 +175,7 @@ class Router
     }
 
     /**
-        * Register PATCH route.
+     * Register PATCH route.
      * @param string $path
      * @param callable $route_method
      * @return void
@@ -186,7 +186,7 @@ class Router
     }
 
     /**
-        * Register DELETE route.
+     * Register DELETE route.
      * @param string $path
      * @param callable $route_method
      * @return void
@@ -197,7 +197,7 @@ class Router
     }
 
     /**
-        * Register OPTIONS route.
+     * Register OPTIONS route.
      * @param string $path
      * @param callable $route_method
      * @return void
@@ -208,7 +208,7 @@ class Router
     }
 
     /**
-        * Register route for one or many HTTP methods.
+     * Register route for one or many HTTP methods.
      * Supports fixed paths (`/api/users`) and templates (`/api/users/{id}`).
      *
      * @param array $methods
@@ -247,7 +247,7 @@ class Router
     }
 
     /**
-        * Rewrite default param name.
+     * Rewrite default param name.
      */
     public static function setParam(string $param): void
     {
@@ -443,7 +443,7 @@ class Router
     }
 
     /**
-        * Get current route path parameters.
+     * Get current route path parameters.
      *
      * In template routes returns named params, e.g. `['id' => '42']`.
      * In legacy mode returns positional params.
@@ -456,7 +456,7 @@ class Router
     }
 
     /**
-        * Get current query parameters.
+     * Get current query parameters.
      * @return array
      */
     public static function getQueryParams(): array
@@ -465,7 +465,7 @@ class Router
     }
 
     /**
-        * Parse and return request body.
+     * Parse and return request body.
      *
      * Supported content types:
      * - application/json
@@ -505,7 +505,7 @@ class Router
     }
 
     /**
-        * Encode payload to JSON and set HTTP status/content-type.
+     * Encode payload to JSON and set HTTP status/content-type.
      *
      * @param mixed $data
      * @param int $status
@@ -575,8 +575,8 @@ class Router
     }
 
     /**
-        * Get list of routes. If $needle is not empty, return only routes
-        * that start with $needle.
+     * Get list of routes. If $needle is not empty, return only routes
+     * that start with $needle.
      * @param string $needle
      * @return array
      */
@@ -592,7 +592,7 @@ class Router
     }
 
     /**
-        * Get current route.
+     * Get current route.
      * @return string
      */
     public static function getSelectedRoute(): string
@@ -601,7 +601,7 @@ class Router
     }
 
     /**
-        * Redirect to another route.
+     * Redirect to another route.
      * @param string $route
      * @param array $params
      * @return void
