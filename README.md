@@ -99,20 +99,20 @@ php -t ./tests/ -S localhost:8000
 
 Open one of the specified URL-s after this.
 
-- `http:://localhost:8000/test.php?q=test`
-- `http:://localhost:8000/test.php?q=test/function`
-- `http:://localhost:8000/test.php?q=test/do`
-- `http:://localhost:8000/test01.php?q=about`
-- `http:://localhost:8000/test01.php?q=user/all`
-- `http:://localhost:8000/test01.php?q=user/view`
-- `http:://localhost:8000/test02.php?q=about`
-- `http:://localhost:8000/test02.php?q=user/all`
-- `http:://localhost:8000/test02.php?q=user/view`
+- `http://localhost:8000/test.php?q=test`
+- `http://localhost:8000/test.php?q=test/function`
+- `http://localhost:8000/test.php?q=test/do`
+- `http://localhost:8000/test01.php?q=about`
+- `http://localhost:8000/test01.php?q=user/all`
+- `http://localhost:8000/test01.php?q=user/view`
+- `http://localhost:8000/test02.php?q=about`
+- `http://localhost:8000/test02.php?q=user/all`
+- `http://localhost:8000/test02.php?q=user/view`
 
 REST testing examples (Phase 1):
 
-- `http:://localhost:8000/test03.php/api/health` (GET)
-- `http:://localhost:8000/test03.php/api/users` (GET)
+- `http://localhost:8000/test03.php/api/health` (GET)
+- `http://localhost:8000/test03.php/api/users` (GET)
 - `curl -i -X POST http://localhost:8000/test03.php/api/users`
 - `curl -i -X PUT http://localhost:8000/test03.php/api/users` (expects `405 Method Not Allowed`)
 - `curl -i -X GET http://localhost:8000/test03.php/api/missing` (expects `404 Not Found`)
