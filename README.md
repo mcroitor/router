@@ -1,7 +1,11 @@
 # PHP router
 
+[![License: Unlicense](https://img.shields.io/badge/License-Unlicense-blue.svg)](UNLICENSE)
+
 The `router` class do simple thing: routes by `label` to the callable. The callable need to be registered.
-This router is GET method based.
+Historically this router is GET method based.
+
+REST API support (method + path) is also available now. Legacy `?q=` mode is preserved for backward compatibility.
 
 All methods of `router` class are static. Default route param is `q`.
 
@@ -34,10 +38,10 @@ $routes = [
 ];
 
 // register routes
-\mc\router::init($routes);
+\Mc\Router::init($routes);
 
 // process route
-\mc\router::run();
+\Mc\Router::run();
 ```
 
 Usage examples for provided routes:
@@ -50,27 +54,30 @@ Usage examples for provided routes:
 ## Attribute usage example
 
 ```php
-#[route("about")]
-function about() {
+use Mc\Route;
+use Mc\Router;
+
+#[Route("about")]
+function about(array $params) {
     echo "about function called";
 }
 
 class post {
-    #[route("post/all")]
+    #[Route("post/all")]
     public static function all(array $params) { echo "show all posts"; }
 
-    #[route("post/view")]
+    #[Route("post/view")]
     public static function view(array $params) { echo "show post {$params[0]}"; }
 
-    #[route("post/edit")]
+    #[Route("post/edit")]
     public static function edit(array $params) { echo "edit post {$params[0]}"; }
 }
 
 // register routes
-\mc\router::init();
+Router::init();
 
 // process route
-\mc\router::run();
+Router::run();
 ```
 
 Usage examples for provided routes:
@@ -92,15 +99,61 @@ php -t ./tests/ -S localhost:8000
 
 Open one of the specified URL-s after this.
 
-- `http:://localhost:8000/test.php?q=test`
-- `http:://localhost:8000/test.php?q=test/function`
-- `http:://localhost:8000/test.php?q=test/do`
-- `http:://localhost:8000/test01.php?q=about`
-- `http:://localhost:8000/test01.php?q=user/all`
-- `http:://localhost:8000/test01.php?q=user/view`
-- `http:://localhost:8000/test02.php?q=about`
-- `http:://localhost:8000/test02.php?q=user/all`
-- `http:://localhost:8000/test02.php?q=user/view`
+- `http://localhost:8000/test.php?q=test`
+- `http://localhost:8000/test.php?q=test/function`
+- `http://localhost:8000/test.php?q=test/do`
+- `http://localhost:8000/test01.php?q=about`
+- `http://localhost:8000/test01.php?q=user/all`
+- `http://localhost:8000/test01.php?q=user/view`
+- `http://localhost:8000/test02.php?q=about`
+- `http://localhost:8000/test02.php?q=user/all`
+- `http://localhost:8000/test02.php?q=user/view`
+
+REST testing examples (Phase 1):
+
+- `http://localhost:8000/test03.php/api/health` (GET)
+- `http://localhost:8000/test03.php/api/users` (GET)
+- `curl -i -X POST http://localhost:8000/test03.php/api/users`
+- `curl -i -X PUT http://localhost:8000/test03.php/api/users` (expects `405 Method Not Allowed`)
+- `curl -i -X GET http://localhost:8000/test03.php/api/missing` (expects `404 Not Found`)
+
+REST testing examples (Phase 2):
+
+- `curl -i -X GET "http://localhost:8000/test04.php/api/users/42?expand=posts"`
+- `curl -i -X POST http://localhost:8000/test04.php/api/echo -H "Content-Type: application/json" -d "{\"name\":\"mihail\",\"role\":\"admin\"}"`
+- `curl -i -X POST http://localhost:8000/test04.php/api/echo -H "Content-Type: application/x-www-form-urlencoded" -d "name=mihail&role=admin"`
+
+REST testing examples (Phase 3, attributes):
+
+- `curl -i -X GET http://localhost:8000/test05.php/api/attr/health`
+- `curl -i -X GET "http://localhost:8000/test05.php/api/attr/users/42?expand=posts"`
+- `curl -i -X POST http://localhost:8000/test05.php/api/attr/users -H "Content-Type: application/json" -d "{\"name\":\"mihail\"}"`
+
+Attribute route examples:
+
+```php
+#[Route('/api/attr/health')]
+function health() {
+    return Router::json(['status' => 'ok']);
+}
+
+#[Route('/api/attr/users/{id}', methods: ['GET'])]
+function user_view() {
+    return Router::json(['id' => Router::getPathParams()['id'] ?? null]);
+}
+```
+
+## Migration notes
+
+- Legacy mode keeps working: `?q=about`, `?q=user/view/11`.
+- `register($route, $handler)` remains and maps to `GET` for compatibility.
+- Prefer REST mode for new code: `Router::get('/api/users/{id}', ...)`, `Router::post(...)`.
+- For attributes, old `#[Route('about')]` still works; for REST use `#[Route('/api/users/{id}', methods: ['GET'])]`.
+- API errors now use JSON payload:
+
+```json
+{"error":{"code":"not_found","message":"Not Found","status":404}}
+```
 
 ## project usage
 
@@ -118,16 +171,22 @@ just include in `modules.json`:
 
 and install it.
 
+## License
+
+This project is released under the Unlicense. See `UNLICENSE`.
+
+SPDX-License-Identifier: Unlicense
+
 ## interface
 
 ```php
-namespace mc;
+namespace Mc;
 
 /**
  * this router class is based on $_GET
  * <URL> ::= http[s]://<domain>/?<route-name>[/params]
  */
-class router
+class Router
 {
     /**
      * set routes
@@ -136,7 +195,7 @@ class router
     public static function init(array $routes = []);
 
     /**
-     * load routse from JSON file
+     * load routes from JSON file
      */
     public static function load(string $jsonfile = "routes.json");
 
@@ -146,13 +205,37 @@ class router
     public static function register(string $route_name, callable $route_method);
 
     /**
+     * register route for one or many HTTP methods
+     */
+    public static function match(array $methods, string $path, callable $route_method);
+
+    public static function get(string $path, callable $route_method);
+    public static function post(string $path, callable $route_method);
+    public static function put(string $path, callable $route_method);
+    public static function patch(string $path, callable $route_method);
+    public static function delete(string $path, callable $route_method);
+    public static function options(string $path, callable $route_method);
+
+    /**
+     * request helpers
+     */
+    public static function getPathParams(): array;
+    public static function getQueryParams(): array;
+    public static function getBody(): array;
+
+    /**
+     * build JSON response payload
+     */
+    public static function json($data, int $status = 200): string;
+
+    /**
      * rewrite default param name
      */
-    public static function set_param(string $param);
+    public static function setParam(string $param): void;
 
     /**
      * entry point for routing! Returns route value.
      */
-    public static function run();
+    public static function run(): string;
 }
 ```
