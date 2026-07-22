@@ -1,0 +1,20 @@
+{
+    "name": "mcroitor/router",
+    "description": "The router class do simple thing: routes by label to the callable.",
+    "type": "library",
+    "license": "Unlicense license",
+    "authors": [
+        {
+            "name": "mcroitor",
+            "homepage": "https://github.com/mcroitor"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mc\\": "src/mc/"
+        }
+    }
+}
