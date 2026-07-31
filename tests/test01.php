@@ -1,6 +1,6 @@
 <?php
 
-include_once "../src/mc/router.php";
+include_once "../src/Mc/Router.php";
 
 function index(array $params){
     echo __FUNCTION__ . " function";

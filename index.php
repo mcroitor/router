@@ -1,6 +1,6 @@
 <?php
 
-include_once "../src/mc/router.php";
+include_once "../src/Mc/Router.php";
 
 class post {
     public static function all(array $params) { echo "show all posts"; }
